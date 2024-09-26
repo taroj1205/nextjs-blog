@@ -9,6 +9,8 @@ export const metadata = {
 	description: "Read about my university life and coding journey",
 };
 
+export const runtime = "edge";
+
 export default async function BlogPage({
 	searchParams,
 }: {
