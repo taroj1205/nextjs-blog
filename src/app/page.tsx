@@ -1,101 +1,176 @@
+import { Suspense } from "react";
+import Link from "next/link";
 import Image from "next/image";
+import { SearchBar } from "@/components/search-bar";
+import { Button } from "@/components/ui/button";
+import {
+	Card,
+	CardContent,
+	CardFooter,
+	CardHeader,
+	CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { ArrowRight, BookOpen, Calendar, Clock, Tag } from "lucide-react";
+import { allPosts } from "content-collections";
+import { calculateReadingTime } from "@/lib/mdx";
 
-export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+export default async function Home() {
+	return (
+		<div className="container mx-auto px-4 py-8 space-y-12">
+			<section className="text-center space-y-4">
+				<h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl">
+					Welcome to My University Blog
+				</h1>
+				<p className="text-xl text-muted-foreground max-w-[700px] mx-auto">
+					Exploring the intersection of university life and coding adventures.
+					Join me on this exciting journey!
+				</p>
+				<Suspense fallback={<div>Loading search...</div>}>
+					<SearchBar />
+				</Suspense>
+			</section>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+			<section>
+				<h2 className="text-3xl font-bold mb-6">Featured Posts</h2>
+				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+					{allPosts.slice(0, 3).map((post) => (
+						<Card
+							key={post._meta.filePath}
+							className="flex flex-col overflow-hidden transition-all hover:shadow-lg"
+						>
+							<CardHeader className="p-0">
+								<Image
+									src={post.coverImage || "/placeholder.svg"}
+									alt={post.title}
+									width={600}
+									height={400}
+									className="object-cover w-full h-48"
+								/>
+							</CardHeader>
+							<CardContent className="flex-grow p-6">
+								<Link
+									href={`/blog/${post._meta.path}`}
+									passHref
+									className="hover:underline"
+								>
+									<CardTitle className="mb-2 line-clamp-2">
+										{post.title}
+									</CardTitle>
+								</Link>
+								<p className="text-muted-foreground mb-4 line-clamp-3">
+									{post.excerpt}
+								</p>
+								<div className="flex flex-wrap gap-2">
+									{post.tags.slice(0, 3).map((tag: string) => (
+										<Link
+											key={tag}
+											href={`/blog?tag=${encodeURIComponent(tag)}`}
+											passHref
+										>
+											<Badge variant="secondary" className="hover:underline">
+												{tag}
+											</Badge>
+										</Link>
+									))}
+								</div>
+							</CardContent>
+							<CardFooter className="p-6 pt-0 flex justify-between items-center flex-wrap gap-4">
+								<div className="flex items-center text-sm text-muted-foreground gap-4">
+									<div className="flex items-center justify-center">
+										<Calendar className="mr-1 h-4 w-4" />
+										<time dateTime={post.date}>
+											{new Date(post.date).toLocaleDateString()}
+										</time>
+									</div>
+									<span className="mx-2 hidden lg:flex">•</span>
+									<div className="flex items-center justify-center">
+										<Clock className="mr-1 h-4 w-4" />
+										<span>{calculateReadingTime(post.content)} min read</span>
+									</div>
+								</div>
+								<Link href={`/blog/${post._meta.path}`} passHref>
+									<Button variant="ghost" className="p-2">
+										Read more
+										<ArrowRight className="ml-2 h-4 w-4" />
+									</Button>
+								</Link>
+							</CardFooter>
+						</Card>
+					))}
+				</div>
+			</section>
+
+			<section className="space-y-6">
+				<h2 className="text-3xl font-bold">Recent Posts</h2>
+				<div className="space-y-4">
+					{allPosts.slice(0, 5).map((post) => (
+						<Link
+							key={post._meta.filePath}
+							href={`/blog/${post._meta.path}`}
+							passHref
+						>
+							<div className="flex items-center space-x-4 p-4 rounded-lg transition-all hover:bg-muted">
+								<div className="flex-shrink-0">
+									<Image
+										src={post.coverImage || "/placeholder.svg"}
+										alt={post.title}
+										width={100}
+										height={100}
+										className="object-cover rounded-md"
+									/>
+								</div>
+								<div className="flex-grow">
+									<h3 className="text-xl font-semibold mb-1">{post.title}</h3>
+									<p className="text-muted-foreground line-clamp-2">
+										{post.excerpt}
+									</p>
+									<div className="flex items-center mt-2 text-sm text-muted-foreground">
+										<Calendar className="mr-1 h-4 w-4" />
+										<time dateTime={post.date}>
+											{new Date(post.date).toLocaleDateString()}
+										</time>
+										<span className="mx-2">•</span>
+										<Clock className="mr-1 h-4 w-4" />
+										<span>{calculateReadingTime(post.content)} min read</span>
+										<span className="mx-2">•</span>
+										<Tag className="mr-1 h-4 w-4" />
+										<span>{post.tags.slice(0, 2).join(", ")}</span>
+									</div>
+								</div>
+							</div>
+						</Link>
+					))}
+				</div>
+				<div className="text-center">
+					<Link href="/blog" passHref>
+						<Button>
+							View all posts
+							<ArrowRight className="ml-2 h-4 w-4" />
+						</Button>
+					</Link>
+				</div>
+			</section>
+
+			<section className="bg-muted p-8 rounded-lg">
+				<h2 className="text-3xl font-bold mb-4">About This Blog</h2>
+				<p className="text-lg mb-6">
+					This blog is a chronicle of my university experiences and coding
+					journey. Here, I share insights, challenges, and discoveries from both
+					academic and programming worlds.
+				</p>
+				<div className="flex justify-center space-x-4">
+					<Link href="https://taroj.pages.dev/" passHref>
+						<Button variant="outline">Learn More About Me</Button>
+					</Link>
+					<Link href="/blog" passHref>
+						<Button>
+							Start Reading
+							<BookOpen className="ml-2 h-4 w-4" />
+						</Button>
+					</Link>
+				</div>
+			</section>
+		</div>
+	);
 }
