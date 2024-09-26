@@ -26,7 +26,7 @@ export const metadata: Metadata = {
 	openGraph: {
 		type: "website",
 		locale: "en_US",
-		url: "https://your-domain.com",
+		url: "https://taroj-blog.pages.dev/",
 		siteName: "My University Blog",
 	},
 	twitter: {
