@@ -26,7 +26,7 @@ export const metadata: Metadata = {
 	openGraph: {
 		type: "website",
 		locale: "en_US",
-		url: "https://your-domain.com",
+		url: "https://taroj-blog.pages.dev/",
 		siteName: "My University Blog",
 	},
 	twitter: {
@@ -37,8 +37,6 @@ export const metadata: Metadata = {
 	},
 	icons: {
 		icon: "/favicon.ico",
-		shortcut: "/favicon-16x16.png",
-		apple: "/apple-touch-icon.png",
 	},
 };
 

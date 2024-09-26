@@ -4,6 +4,25 @@ import { allPosts } from "content-collections";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 
+export const generateStaticParams = async () => {
+	const posts = allPosts.map((post) => post._meta.path);
+
+	return posts;
+};
+
+export const generateMetadata = ({ params }: { params: { slug: string } }) => {
+	const post = allPosts.find((post) => post._meta.path === params.slug);
+
+	if (!post) {
+		return null;
+	}
+
+	return {
+		title: post.title,
+		description: post.excerpt,
+	};
+};
+
 export default async function BlogPost({
 	params,
 }: {

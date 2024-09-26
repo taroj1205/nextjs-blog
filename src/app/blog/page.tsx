@@ -2,7 +2,6 @@ import Link from "next/link";
 import { BlogList } from "@/components/blog-list";
 import { Button } from "@/components/ui/button";
 import { allPosts } from "content-collections";
-import { calculateReadingTime } from "@/lib/mdx";
 import searchJSON from "@/lib/search-data.json";
 
 export const metadata = {
@@ -38,18 +37,7 @@ export default async function BlogPage({
 				(typeof tag === "string" &&
 					post.tags.find((postTag) => postTag === tag)),
 		)
-		.slice(page - 1, page * limit)
-		.map((post) => {
-			return {
-				slug: post._meta.path,
-				title: post.title,
-				date: post.date,
-				excerpt: post.excerpt,
-				tags: post.tags,
-				coverImage: post.coverImage,
-				readingTime: calculateReadingTime(post.content),
-			};
-		});
+		.slice(page - 1, page * limit);
 
 	const totalPages = Math.ceil(posts.length / limit);
 	const paginatedPosts = posts.slice((page - 1) * limit, page * limit);
