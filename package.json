@@ -40,6 +40,7 @@
     "unified": "^11.0.5"
   },
   "devDependencies": {
+    "@cloudflare/next-on-pages": "^1.13.3",
     "@content-collections/core": "^0.7.1",
     "@content-collections/markdown": "^0.1.1",
     "@content-collections/next": "^0.2.2",
