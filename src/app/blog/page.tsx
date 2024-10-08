@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { allPosts } from "content-collections";
 import searchJSON from "@/lib/search-data.json";
 
+// export const runtime = "edge";
+
 export const metadata = {
 	title: "Blog",
 	description: "Read about my university life and coding journey",

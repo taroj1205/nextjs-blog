@@ -2,7 +2,8 @@ import { withContentCollections } from "@content-collections/next";
  
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // your next.js config
+  swcMinify: true,
+  output: "export",
 };
  
 // withContentCollections must be the outermost plugin
