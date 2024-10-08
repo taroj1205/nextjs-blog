@@ -5,8 +5,6 @@ import remarkHeadingId from "remark-heading-id";
 import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypePrismPlus from "rehype-prism-plus";
-// import toc from "@/lib/toc-data.json"
-import { generateToc } from "@/lib/mdx";
 
 const posts = defineCollection({
 	name: "posts",
