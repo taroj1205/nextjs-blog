@@ -25,8 +25,6 @@ export const generateMetadata = ({ params }: { params: { slug: string } }) => {
 	};
 };
 
-export const runtime = "edge";
-
 export default async function BlogPost({
 	params,
 }: {
