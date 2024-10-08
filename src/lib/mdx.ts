@@ -18,6 +18,7 @@ export const generateToc = (content: string): TocItem[] => {
   });
 }
 
+
 export const generateTocMarkdown = (tocItems: TocItem[]): string => {
   return tocItems.map(item => `${'  '.repeat(item.level - 1)}- [${item.text}](#${item.id})`).join('\n');
 }
@@ -44,7 +45,7 @@ export async function getAllTags() {
   return Array.from(tags);
 }
 
-interface TocItem {
+export interface TocItem {
   id: string;
   text: string;
   level: number;

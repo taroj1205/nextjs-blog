@@ -1,15 +1,12 @@
 import { defineCollection, defineConfig } from "@content-collections/core";
-import { compileMarkdown } from "@content-collections/markdown";
+import {compileMDX} from "@content-collections/mdx";
 import remarkGfm from "remark-gfm";
 import remarkHeadingId from "remark-heading-id";
 import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypePrismPlus from "rehype-prism-plus";
-import {
-	calculateReadingTime,
-	generateToc,
-	generateTocMarkdown,
-} from "@/lib/mdx";
+// import toc from "@/lib/toc-data.json"
+import { generateToc } from "@/lib/mdx";
 
 const posts = defineCollection({
 	name: "posts",
@@ -24,22 +21,16 @@ const posts = defineCollection({
 		coverImage: z.string(),
 	}),
 	transform: async (post, context) => {
-		const headings = generateToc(post.content);
-		post.content = post.content.replace(
-			"<!-- toc -->",
-			generateTocMarkdown(headings),
-		);
-
-		const html = await compileMarkdown(context, post, {
+		const mdx = await compileMDX(context, post, {
 			rehypePlugins: [rehypeSlug, rehypeAutolinkHeadings, rehypePrismPlus],
 			remarkPlugins: [remarkGfm, remarkHeadingId],
-		});
+		})
 
 		return {
 			...post,
-			html,
+			mdx,
 		};
-	},
+	}
 });
 
 export default defineConfig({

@@ -54,9 +54,7 @@ export default async function Home() {
 									passHref
 									className="hover:underline"
 								>
-									<CardTitle className="mb-2 line-clamp-2">
-										{post.title}
-									</CardTitle>
+									<CardTitle>{post.title}</CardTitle>
 								</Link>
 								<p className="text-muted-foreground mb-4 line-clamp-3">
 									{post.excerpt}

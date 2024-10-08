@@ -3,6 +3,8 @@ import { calculateReadingTime } from "@/lib/mdx";
 import { allPosts } from "content-collections";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
+import { MDXContent } from "@content-collections/mdx/react";
+import { Toc } from "@/components/toc";
 
 export const generateStaticParams = async () => {
 	const posts = allPosts.map((post) => post._meta.path);
@@ -38,7 +40,7 @@ export default async function BlogPost({
 
 	return (
 		<div className="container mx-auto px-4 py-8">
-			<article className="prose dark:prose-invert lg:prose-xl mx-auto">
+			<article className="prose dark:prose-invert lg:prose-xl mx-auto prose-h1:scroll-mt-20 prose-h2:scroll-mt-20 prose-h3:scroll-mt-20 prose-h4:scroll-mt-20 prose-h5:scroll-mt-20 prose-h6:scroll-mt-20">
 				<h1>{post.title}</h1>
 				<div className="flex items-center space-x-2 text-sm text-muted-foreground">
 					<time dateTime={post.date}>
@@ -63,10 +65,11 @@ export default async function BlogPost({
 						</Link>
 					))}
 				</div>
-				<div
-					// biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
-					dangerouslySetInnerHTML={{ __html: post.html }}
-					className="prose-h1:scroll-mt-20 prose-h2:scroll-mt-20 prose-h3:scroll-mt-20 prose-h4:scroll-mt-20 prose-h5:scroll-mt-20 prose-h6:scroll-mt-20"
+				<MDXContent
+					code={post.mdx}
+					components={{
+						Toc,
+					}}
 				/>
 			</article>
 		</div>
