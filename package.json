@@ -6,6 +6,9 @@
     "dev": "next dev --turbo",
     "build": "next build",
     "start": "next start",
+    "pages:build": "npx @cloudflare/next-on-pages",
+    "preview": "pnpm run pages:build && wrangler pages dev",
+    "deploy": "pnpm run pages:build && wrangler pages deploy",
     "lint": "next lint",
     "gen:search-data": "tsx src/scripts/generate-search-json",
     "gen:toc": "tsx src/scripts/generate-toc"
@@ -59,6 +62,7 @@
     "eslint-config-next": "14.2.13",
     "eslint-plugin-next-on-pages": "^1.13.5",
     "postcss": "^8",
+    "prettier": "^3.3.3",
     "tailwindcss": "^3.4.1",
     "ts-node": "^10.9.2",
     "tsx": "^4.19.1",

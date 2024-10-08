@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { MDXContent } from "@content-collections/mdx/react";
 import { Toc } from "@/components/toc";
 
-// export const runtime = "edge";
+export const runtime = "edge";
 
 export const generateStaticParams = async () => {
 	const posts = allPosts.map((post) => ({
