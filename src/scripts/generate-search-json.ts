@@ -4,6 +4,11 @@ import matter from "gray-matter";
 
 const postsDirectory = path.join(process.cwd(), "src", "posts");
 const searchDataFile = path.join(process.cwd(), "src", "lib", "search-data.json");
+const publicDirectory = path.join(process.cwd(), "public", "assets");
+
+if (!fs.existsSync(publicDirectory)) {
+  fs.mkdirSync(publicDirectory);
+}
 
 function generateSearchData() {
   const slugs = fs.readdirSync(postsDirectory);
@@ -23,6 +28,7 @@ function generateSearchData() {
   });
 
   fs.writeFileSync(searchDataFile, JSON.stringify(searchData));
+  fs.copyFileSync(searchDataFile, path.join(publicDirectory, "search-data.json"));
   console.log("Search data generated successfully!");
 }
 
