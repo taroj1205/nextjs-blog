@@ -3,14 +3,15 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbo",
-    "build": "next build",
+    "dev": "pnpm prepare && next dev --turbo",
+    "build": "pnpm prepare && next build",
     "start": "next start",
     "pages:build": "npx @cloudflare/next-on-pages",
     "preview": "pnpm run pages:build && wrangler pages dev",
     "deploy": "pnpm run pages:build && wrangler pages deploy",
     "lint": "next lint",
-    "gen:search-data": "tsx src/scripts/generate-search-json"
+    "gen:search-data": "tsx src/scripts/generate-search-json",
+    "prepare": "pnpm gen:search-data"
   },
   "dependencies": {
     "@mdx-js/loader": "^3.0.1",
