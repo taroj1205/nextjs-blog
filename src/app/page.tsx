@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { SearchBar } from "@/components/search-bar";
@@ -18,17 +17,15 @@ import { calculateReadingTime } from "@/lib/mdx";
 export default async function Home() {
 	return (
 		<div className="container mx-auto px-4 py-8 space-y-12">
-			<section className="text-center space-y-4">
-				<h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl">
+			<section className="space-y-4">
+				<h1 className="text-center text-4xl font-extrabold tracking-tight lg:text-5xl">
 					Welcome to My University Blog
 				</h1>
-				<p className="text-xl text-muted-foreground max-w-[700px] mx-auto">
+				<p className=" text-centertext-xl text-muted-foreground max-w-[700px] mx-auto">
 					Exploring the intersection of university life and coding adventures.
 					Join me on this exciting journey!
 				</p>
-				<Suspense fallback={<div>Loading search...</div>}>
 					<SearchBar />
-				</Suspense>
 			</section>
 
 			<section>
@@ -158,7 +155,7 @@ export default async function Home() {
 					academic and programming worlds.
 				</p>
 				<div className="flex justify-center space-x-4">
-					<Link href="https://taroj.pages.dev/" passHref>
+					<Link href="https://taroj1205.poyo.jp/" passHref>
 						<Button variant="outline">Learn More About Me</Button>
 					</Link>
 					<Link href="/blog" passHref>

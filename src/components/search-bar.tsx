@@ -19,8 +19,10 @@ export function SearchBar() {
 	const [query, setQuery] = useState("");
 	const [results, setResults] = useState<SearchResult[]>([]);
 	const [activeIndex, setActiveIndex] = useState<number>(0);
+	const [isOverlayVisible, setIsOverlayVisible] = useState(false);
 	const router = useRouter();
 	const inputRef = useRef<HTMLInputElement>(null);
+	const containerRef = useRef<HTMLFormElement>(null);
 
 	useEffect(() => {
 		if (query.length > 0) {
@@ -28,54 +30,26 @@ export function SearchBar() {
 				JSON.stringify(item).toLowerCase().includes(query.toLowerCase()),
 			);
 			setResults(filteredResults);
+			setIsOverlayVisible(true);
 		} else {
 			setResults([]);
+			setIsOverlayVisible(false);
 		}
 	}, [query]);
 
-	const handleKeydown = useCallback(
-		(e: KeyboardEvent) => {
-			if (e.key === "Escape") {
-				setQuery("");
-				setResults([]);
-			} else if (e.key === "Enter") {
-				if (activeIndex > 0) {
-					const result = results[activeIndex - 1];
-					router.push(`/blog/${result.slug}`);
-					setQuery("");
-					setResults([]);
-				} else {
-					router.push(`/blog?q=${encodeURIComponent(query)}`);
-				}
-			} else if (e.key === "ArrowDown") {
-				e.preventDefault();
-				if (results.length > 0 && activeIndex < results.length) {
-					setActiveIndex((prevIndex) => prevIndex + 1);
-				}
-			} else if (e.key === "ArrowUp") {
-				e.preventDefault();
-				if (results.length > 0 && activeIndex > 0) {
-					setActiveIndex((prevIndex) => prevIndex - 1);
-				}
-			} else if (query.length === 0) {
+			const handleClickOutside = useCallback((event: MouseEvent) => {
+			if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+				setIsOverlayVisible(false);
 				setActiveIndex(0);
 			}
-		},
-		[query, router, results, activeIndex],
-	);
+		}, []);
 
 	useEffect(() => {
-		const inputEl = inputRef.current;
-		const handleKeyDown = (e: KeyboardEvent) => handleKeydown(e);
-		if (inputEl) {
-			inputEl.addEventListener("keydown", handleKeyDown);
-		}
+		document.addEventListener("mousedown", handleClickOutside);
 		return () => {
-			if (inputEl) {
-				inputEl.removeEventListener("keydown", handleKeyDown);
-			}
+			document.removeEventListener("mousedown", handleClickOutside);
 		};
-	}, [handleKeydown]);
+	}, [handleClickOutside]);
 
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
@@ -85,13 +59,18 @@ export function SearchBar() {
 	};
 
 	return (
-		<form onSubmit={handleSubmit} className="relative w-full">
+		<form onSubmit={handleSubmit} className="relative w-full" ref={containerRef}>
 			<div className="relative">
 				<Input
 					type="search"
 					placeholder="Search..."
 					value={query}
 					onChange={(e) => setQuery(e.target.value)}
+					onFocus={() => {
+						if (results.length > 0) {
+							setIsOverlayVisible(true);
+						}
+					}}
 					className="w-full pl-4 pr-12"
 					ref={inputRef}
 				/>
@@ -105,7 +84,7 @@ export function SearchBar() {
 					<span className="sr-only">Search</span>
 				</Button>
 			</div>
-			{results.length > 0 && (
+			{isOverlayVisible && results.length > 0 && (
 				<motion.ul
 					initial={{ opacity: 0, y: -10 }}
 					animate={{ opacity: 1, y: 0 }}
