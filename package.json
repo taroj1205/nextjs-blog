@@ -10,8 +10,7 @@
     "preview": "pnpm run pages:build && wrangler pages dev",
     "deploy": "pnpm run pages:build && wrangler pages deploy",
     "lint": "next lint",
-    "gen:search-data": "tsx src/scripts/generate-search-json",
-    "gen:toc": "tsx src/scripts/generate-toc"
+    "gen:search-data": "tsx src/scripts/generate-search-json"
   },
   "dependencies": {
     "@mdx-js/loader": "^3.0.1",
