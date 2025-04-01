@@ -85,37 +85,46 @@ export function SearchBar() {
 	};
 
 	return (
-		<form onSubmit={handleSubmit} className="relative">
-			<Input
-				type="search"
-				placeholder="Search..."
-				value={query}
-				onChange={(e) => setQuery(e.target.value)}
-				className="w-full"
-				ref={inputRef}
-			/>
-			<Button type="submit" size="sm" className="absolute right-0 top-0 h-full">
-				<Search className="h-4 w-4" />
-				<span className="sr-only">Search</span>
-			</Button>
+		<form onSubmit={handleSubmit} className="relative w-full">
+			<div className="relative">
+				<Input
+					type="search"
+					placeholder="Search..."
+					value={query}
+					onChange={(e) => setQuery(e.target.value)}
+					className="w-full pl-4 pr-12"
+					ref={inputRef}
+				/>
+				<Button
+					type="submit"
+					size="sm"
+					variant="ghost"
+					className="absolute right-1 top-1/2 -translate-y-1/2 hover:bg-muted/50"
+				>
+					<Search className="h-4 w-4" />
+					<span className="sr-only">Search</span>
+				</Button>
+			</div>
 			{results.length > 0 && (
 				<motion.ul
-					initial={{ opacity: 0 }}
-					animate={{ opacity: 1 }}
-					className="absolute z-10 mt-2 w-full rounded-md bg-background shadow-lg"
+					initial={{ opacity: 0, y: -10 }}
+					animate={{ opacity: 1, y: 0 }}
+					exit={{ opacity: 0, y: -10 }}
+					transition={{ duration: 0.15 }}
+					className="absolute z-10 mt-2 w-full overflow-hidden rounded-md border bg-background/95 shadow-lg backdrop-blur-xl supports-[backdrop-filter]:bg-background/90"
 				>
 					{results.map((result) => (
 						<li
 							key={result.slug}
-							className="border-b last:border-b-0 bg-transparent data-[active=true]:bg-muted transition-colors duration-200 ease-in-out"
+							className="border-b last:border-b-0 transition-colors duration-200 ease-in-out data-[active=true]:bg-muted"
 							data-active={activeIndex === results.indexOf(result) + 1}
 						>
 							<Link
 								href={`/blog/${result.slug}`}
-								className="block px-4 py-2 hover:bg-muted"
+								className="block px-4 py-3 hover:bg-muted/50"
 							>
-								<h3 className="text-sm font-medium">{result.title}</h3>
-								<p className="text-xs text-muted-foreground">
+								<h3 className="font-medium text-sm text-foreground">{result.title}</h3>
+								<p className="mt-1 text-xs text-muted-foreground line-clamp-2">
 									{result.excerpt}
 								</p>
 							</Link>

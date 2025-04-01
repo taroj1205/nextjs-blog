@@ -102,7 +102,7 @@ export default async function Home() {
 			<section className="space-y-6">
 				<h2 className="text-3xl font-bold">Recent Posts</h2>
 				<div className="space-y-4">
-					{allPosts.slice(0, 5).map((post) => (
+					{allPosts.slice(-5).reverse().map((post) => (
 						<Link
 							key={post._meta.filePath}
 							href={`/blog/${post._meta.path}`}

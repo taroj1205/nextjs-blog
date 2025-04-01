@@ -8,10 +8,10 @@ import { SearchBar } from "./search-bar";
 import { useTheme } from "next-themes";
 
 export function Navbar() {
-  const { setTheme, theme } = useTheme();
+  const { setTheme, resolvedTheme } = useTheme();
 
   const toggleDarkMode = () => {
-    setTheme(theme === "dark" ? "light" : "dark");
+    setTheme(resolvedTheme === "dark" ? "light" : "dark");
   };
 
   const pathname = usePathname();
